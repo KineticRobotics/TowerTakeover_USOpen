@@ -12,10 +12,25 @@ void intakeControl(int stateIn, int stateOut){
     }
 }
 
-void tilterControl(int speed){
-    if(speed > 20){ //untested-- There *should* be an abs() there.
-        tilter.moveVelocity(speed);
+void tilterControl(float speed){
+    if(speed > .10 || speed < -.10){ 
+        tilter.moveVelocity(100*speed);
     } else{
         tilter.moveVelocity(0);
     }
+}
+
+void dr4bControl(int L1, int L2, int buttonB) { //change variable names?
+    if(L1 == 1 && L2 == 0 && buttonB == 0)
+        dr4b.moveVelocity(100);
+    else if(L1 == 0 && L2 == 1 && buttonB == 0)
+        dr4b.moveVelocity(-100);
+    else if(L1 == 0 && L2 == 0 && buttonB == 0)
+        dr4b.moveVelocity(0);
+    else if(L1 == 1 && L2 == 0 && buttonB == 1)
+        dr4b.moveVelocity(50);
+    else if(L1 == 0 && L2 == 1 && buttonB == 1)
+        dr4b.moveVelocity(-50);
+    else
+        dr4b.moveVelocity(0);
 }
