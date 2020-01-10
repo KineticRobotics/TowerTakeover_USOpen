@@ -2,14 +2,23 @@
 #include "okapi/api.hpp"
 #include "main.h"
 
-void intakeControl(int stateIn, int stateOut){
+bool intakeControl(int stateIn, int stateOut, bool isZero){
+    //printf("%d", isZero); //This prints 0 and only 0, which is false. I think this is right. 
     if(stateIn == 1 && stateOut == 0){
         intake.moveVelocity(100);
+        isZero = false;
     } else if(stateIn == 0 && stateOut == 1){
         intake.moveVelocity(-100);
+        isZero = false;
     } else{
-        intake.moveVelocity(0);
+        if (isZero == false)
+        {
+            intake.moveVelocity(0);
+            isZero = true;
+            //printf("%d", isZero); //This continually prints 1, even if other functions should be running.
+        }
     }
+    return isZero;
 }
 
 void tilterControl(float speed){
