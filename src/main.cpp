@@ -15,9 +15,13 @@ void autonomous() {} //Maybe make one of those...
 void opcontrol()
 {
     bool isZero = false;
+    bool isZero2 = false;
+    bool isZero3 = false;
     intakeLeft.setBrakeMode(AbstractMotor::brakeMode::hold); //set all motors to specific brake types here. Dont know why but this doesn't work in motor.h
     intakeRight.setBrakeMode(AbstractMotor::brakeMode::hold);
     tilter.setBrakeMode(AbstractMotor::brakeMode::hold);
+    intake.setBrakeMode(AbstractMotor::brakeMode::coast);
+    dr4b.setBrakeMode(AbstractMotor::brakeMode::hold);
 
     Controller masterController; //Maybe this can go in motor.h?
 
@@ -30,8 +34,8 @@ void opcontrol()
         chassis.arcade(masterController.getAnalog(ControllerAnalog::leftX),
                        masterController.getAnalog(ControllerAnalog::leftY));
 
-        tilterControl(masterController.getAnalog(ControllerAnalog::rightY));
+        isZero2 = tilterControl(masterController.getAnalog(ControllerAnalog::rightY), isZero2);
 
-        dr4bControl(masterController.getDigital(ControllerDigital::L1), masterController.getDigital(ControllerDigital::L2), masterController.getDigital(ControllerDigital::B));
+        isZero3 = dr4bControl(masterController.getDigital(ControllerDigital::L1), masterController.getDigital(ControllerDigital::L2), masterController.getDigital(ControllerDigital::B), isZero3);
     }
 }

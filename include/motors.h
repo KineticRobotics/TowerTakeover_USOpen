@@ -20,7 +20,7 @@ Motor intakeRight(16, true, AbstractMotor::gearset::red);
 MotorGroup intake({intakeLeft,intakeRight});
 
 Motor tilter(3, true, AbstractMotor::gearset::red);
-
+auto tilterEncoder = IntegratedEncoder(tilter);
 /*----------TEMPLATES------------------
 okapi::MotorGroup right2({10, 20});
 
