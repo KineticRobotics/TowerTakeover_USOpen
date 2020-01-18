@@ -20,7 +20,7 @@ bool intakeControl(int stateIn, int stateOut, bool isZero){
 }
 
 bool tilterControl(float speed, bool isZero2){
-    if(speed > .10 || speed < -.10){ 
+    if(speed > .10 || speed < -.10){
         tilter.moveVelocity(100*speed);
         isZero2 = false;
     } else{
@@ -33,23 +33,24 @@ bool tilterControl(float speed, bool isZero2){
 
 bool dr4bControl(int L1, int L2, int buttonB, bool isZero3) { //change variable names?
     if(L1 == 1 && L2 == 0 && buttonB == 0){
-        dr4b.moveVelocity(200);
+        dr4b.moveVelocity(170);
         isZero3 = false;}
     else if(L1 == 0 && L2 == 1 && buttonB == 0){
-        dr4b.moveVelocity(-200);
+        dr4b.moveVelocity(-170);
         isZero3 = false;}
     else if(L1 == 0 && L2 == 0 && buttonB == 0){
         if (isZero3 == false){
             dr4b.moveVelocity(0);
             isZero3 = true;}}
     else if(L1 == 1 && L2 == 0 && buttonB == 1){
-        dr4b.moveVelocity(100);
+        dr4b.moveVelocity(70);
         isZero3 = false;}
     else if(L1 == 0 && L2 == 1 && buttonB == 1){
-        dr4b.moveVelocity(-100);
+        dr4b.moveVelocity(-70);
         isZero3 = false;}
     else{
         if (isZero3 == false){
             dr4b.moveVelocity(0);
             isZero3 = true;}}
+    return isZero3;
 }
