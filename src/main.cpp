@@ -10,7 +10,11 @@ void disabled() {} //Runs while robot is disabled. Not sure if we're gonna use t
 
 void competition_initialize() {} //Probably put an autonomous selector here
 
-void autonomous() {} //Maybe make one of those...
+void autonomous() {
+    chassis.setBrakeMode(AbstractMotor::brakeMode::brake);
+    polynomial(20.0, 100);
+    intake.moveVelocity(100);
+} //Maybe make one of those...
 
 void opcontrol()
 {

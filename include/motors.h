@@ -9,6 +9,8 @@ auto chassis = ChassisControllerFactory::create(
     dtL, dtR,
     AbstractMotor::gearset::green,
     {4.25, 12.0});
+auto leftDTEnc = IntegratedEncoder(dtL);
+auto rightDTEnc = IntegratedEncoder(dtR);
 
 Motor dr4bL(20, true, AbstractMotor::gearset::green);
 auto dr4bLEncoder = IntegratedEncoder(dr4bL);
