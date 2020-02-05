@@ -12,14 +12,14 @@ auto chassis = ChassisControllerFactory::create(
 auto leftDTEnc = IntegratedEncoder(dtL);
 auto rightDTEnc = IntegratedEncoder(dtR);
 
-Motor dr4bL(20, true, AbstractMotor::gearset::green);
+Motor dr4bL(20, true, AbstractMotor::gearset::red);
 auto dr4bLEncoder = IntegratedEncoder(dr4bL);
-Motor dr4bR(11, false, AbstractMotor::gearset::green);
+Motor dr4bR(11, false, AbstractMotor::gearset::red);
 auto dr4bREncoder = IntegratedEncoder(dr4bR);
 MotorGroup dr4b({dr4bL, dr4bR});
 
 
-Motor intakeLeft(15, false, AbstractMotor::gearset::red);
+Motor intakeLeft(14, false, AbstractMotor::gearset::red);
 Motor intakeRight(16, true, AbstractMotor::gearset::red);
 
 MotorGroup intake({intakeLeft,intakeRight});
