@@ -26,6 +26,10 @@ MotorGroup intake({intakeLeft,intakeRight});
 
 Motor tilter(3, true, AbstractMotor::gearset::red);
 auto tilterEncoder = IntegratedEncoder(tilter);
+
+pros::ADIAnalogIn lineTracker ('B');
+//lineTracker.get_value() (0 --> 4095): 0 being light and 4095 being dark
+
 /*----------TEMPLATES------------------
 okapi::MotorGroup right2({10, 20});
 
