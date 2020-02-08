@@ -1,15 +1,14 @@
-//#include "motors.h"
 #include "okapi/api.hpp"
 #include "main.h"
 
 void tilterMacro(){
   //This is where the condition for the macro will go. E.g) While DR4B not in position
-    while (tilterEncoder.get() < 450.0)
+    while (tilterEncoder.get() < 350.0)
     {
      //thinking about tilter stuff; made by Vincent 1/16
         tilter.moveVelocity(100);
     }
-    while (tilterEncoder.get() < 600.0)
+    while (tilterEncoder.get() < 550.0)
     {
         tilter.moveVelocity(30);
     }
@@ -20,14 +19,28 @@ void tilterMacro(){
     tilter.moveVelocity(0);
 }
 
-void tilterDownMacro(){
-  //This is where the condition for the macro will go. E.g) While DR4B not in position
-    while (tilterEncoder.get() > 12)
+void dr4bDownMacro(){
+    while (dr4bSensor.get_value() == 0)
     {
-     //thinking about tilter stuff; made by Vincent 1/16
-        tilter.moveVelocity(-100);
+        dr4b.moveVelocity(-100);
+        tilter.moveVelocity(-30);
     }
-    tilter.moveVelocity(0);
+    dr4b.moveVelocity(0);
+    while(tilterSensor.get_value() != 1)
+      {tilter.moveVelocity(-100);}
+      tilter.moveVelocity(0);
+}
+
+void lineSensorMacro() {
+    //while (lineSensor.get_value() < 2800 && lineSensor.get_value() > 2600)
+
+      //printf("%d", lineSensor.get_value());
+
+      intake.moveVelocity(100);
+      pros::delay(200);
+      intake.moveVelocity(0);
+
+
 }
 
 void DR4BMacro1(){  ///Low Tower; 18.83 inches
@@ -83,9 +96,13 @@ void macroTask(void *) //Separate thread from the main thread that will house al
     int newTilter = 0;
     int curTilter;
 
-    int oldTilterDown = 0;
-    int newTilterDown = 0;
-    int curTilterDown;
+    int oldDr4bDown = 0;
+    int newDr4bDown = 0;
+    int curDr4bDown;
+
+    int oldLineSensor = 0;
+    int newLineSensor = 0;
+    int curLineSensor;
 
     int oldLift = 0;
     int newLift = 0;
@@ -111,15 +128,26 @@ void macroTask(void *) //Separate thread from the main thread that will house al
             newTilter = 0;
         }
 
-     //Tilter Down
-        curTilterDown = masterController.getDigital(ControllerDigital::A);
-        oldTilterDown = newTilterDown;
-        newTilterDown = curTilterDown;
-        if (oldTilterDown == 1 && newTilterDown == 0)
+        //dr4b Down
+        curDr4bDown = masterController.getDigital(ControllerDigital::A);
+        oldDr4bDown = newDr4bDown;
+        newDr4bDown = curDr4bDown;
+        if (oldDr4bDown == 1 && newDr4bDown == 0)
         {
-            tilterDownMacro();
-            oldTilterDown = 0;
-            newTilterDown = 0;
+            dr4bDownMacro();
+            oldDr4bDown = 0;
+            newDr4bDown = 0;
+        }
+
+
+        curLineSensor = masterController.getDigital(ControllerDigital::X);
+        oldLineSensor = newLineSensor;
+        newLineSensor = curLineSensor;
+        if (oldLineSensor == 1 && newLineSensor == 0)
+        {
+            lineSensorMacro();
+            oldLineSensor = 0;
+            newLineSensor = 0;
         }
 
         //Low Tower
