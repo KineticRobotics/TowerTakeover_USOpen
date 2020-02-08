@@ -4,12 +4,12 @@
 
 void tilterMacro(){
   //This is where the condition for the macro will go. E.g) While DR4B not in position
-    while (tilterEncoder.get() < 350.0)
+    while (tilterEncoder.get() < 450.0)
     {
      //thinking about tilter stuff; made by Vincent 1/16
-        tilter.moveVelocity(70);
+        tilter.moveVelocity(100);
     }
-    while (tilterEncoder.get() < 550.0)
+    while (tilterEncoder.get() < 600.0)
     {
         tilter.moveVelocity(30);
     }
@@ -22,7 +22,7 @@ void tilterMacro(){
 
 void DR4BMacro1(){  ///Low Tower; 18.83 inches
     while(tilterEncoder.get() < 280){
-        tilter.moveVelocity(45);
+        tilter.moveVelocity(100);
     }
     tilter.moveVelocity(0);
     while(dr4bLEncoder.get() < 330.0 || dr4bREncoder.get() <  330.0){
@@ -33,7 +33,7 @@ void DR4BMacro1(){  ///Low Tower; 18.83 inches
 }
 void DR4BMacro2(){  ///Medium Tower; 24.66 inches
     while(tilterEncoder.get() < 370){
-        tilter.moveVelocity(45);
+        tilter.moveVelocity(100);
     }
     tilter.moveVelocity(0);
     while(dr4bLEncoder.get() < 430.0 || dr4bREncoder.get() <  430.0){
@@ -45,7 +45,7 @@ void DR4BMacro2(){  ///Medium Tower; 24.66 inches
 
 void DR4BMacro3(){  ///Medium Tower; 24.66 inches
   while(tilterEncoder.get() < 370){
-      tilter.moveVelocity(45);
+      tilter.moveVelocity(100);
   }
   tilter.moveVelocity(0);
   while(dr4bLEncoder.get() < 430.0 || dr4bREncoder.get() <  430.0){
@@ -54,7 +54,7 @@ void DR4BMacro3(){  ///Medium Tower; 24.66 inches
   dr4b.moveVelocity(0);
 
   while(tilterEncoder.get() < 515){
-      tilter.moveVelocity(45);
+      tilter.moveVelocity(100);
   }
   tilter.moveVelocity(0);
   while(dr4bLEncoder.get() < 700.0 || dr4bREncoder.get() <  700.0){
