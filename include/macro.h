@@ -20,6 +20,16 @@ void tilterMacro(){
     tilter.moveVelocity(0);
 }
 
+void tilterDownMacro(){
+  //This is where the condition for the macro will go. E.g) While DR4B not in position
+    while (tilterEncoder.get() > 12)
+    {
+     //thinking about tilter stuff; made by Vincent 1/16
+        tilter.moveVelocity(-100);
+    }
+    tilter.moveVelocity(0);
+}
+
 void DR4BMacro1(){  ///Low Tower; 18.83 inches
     while(tilterEncoder.get() < 280){
         tilter.moveVelocity(100);
@@ -31,6 +41,7 @@ void DR4BMacro1(){  ///Low Tower; 18.83 inches
     dr4b.moveVelocity(0);
     //printf("%d",1);
 }
+
 void DR4BMacro2(){  ///Medium Tower; 24.66 inches
     while(tilterEncoder.get() < 370){
         tilter.moveVelocity(100);
@@ -72,6 +83,10 @@ void macroTask(void *) //Separate thread from the main thread that will house al
     int newTilter = 0;
     int curTilter;
 
+    int oldTilterDown = 0;
+    int newTilterDown = 0;
+    int curTilterDown;
+
     int oldLift = 0;
     int newLift = 0;
     int curLift = 0;
@@ -86,7 +101,7 @@ void macroTask(void *) //Separate thread from the main thread that will house al
     while (true)
     {
       //Tilter
-        curTilter = masterController.getDigital(ControllerDigital::up);
+        curTilter = masterController.getDigital(ControllerDigital::Y);
         oldTilter = newTilter;
         newTilter = curTilter;
         if (oldTilter == 1 && newTilter == 0)
@@ -96,9 +111,20 @@ void macroTask(void *) //Separate thread from the main thread that will house al
             newTilter = 0;
         }
 
+     //Tilter Down
+        curTilterDown = masterController.getDigital(ControllerDigital::A);
+        oldTilterDown = newTilterDown;
+        newTilterDown = curTilterDown;
+        if (oldTilterDown == 1 && newTilterDown == 0)
+        {
+            tilterDownMacro();
+            oldTilterDown = 0;
+            newTilterDown = 0;
+        }
+
         //Low Tower
         oldLift = newLift;
-        newLift = masterController.getDigital(ControllerDigital::left);
+        newLift = masterController.getDigital(ControllerDigital::down);
         if (oldLift == 1 && newLift == 0)
         {
             DR4BMacro1();
@@ -108,7 +134,7 @@ void macroTask(void *) //Separate thread from the main thread that will house al
 
         //Medium Tower
         oldLift2 = newLift2;
-        newLift2 = masterController.getDigital(ControllerDigital::down);
+        newLift2 = masterController.getDigital(ControllerDigital::B);
         if (oldLift2 == 1 && newLift2 == 0)
         {
           DR4BMacro2();
