@@ -27,10 +27,13 @@ MotorGroup intake({intakeLeft,intakeRight});
 Motor tilter(3, true, AbstractMotor::gearset::red);
 auto tilterEncoder = IntegratedEncoder(tilter);
 
+Motor tilter2(8, true, AbstractMotor::gearset::red);
+auto tilterEncoder2 = IntegratedEncoder(tilter2);
+
 
 pros::ADIDigitalIn tilterSensor ('B');
 pros::ADIAnalogIn lineSensor ('C');
-pros::ADIDigitalIn dr4bSensor ('D'); 
+pros::ADIDigitalIn dr4bSensor ('D');
 //lineTracker.get_value() (0 --> 4095): 0 being light and 4095 being dark
 
 /*----------TEMPLATES------------------
