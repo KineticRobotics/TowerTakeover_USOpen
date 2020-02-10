@@ -27,7 +27,7 @@ MotorGroup intake({intakeLeft,intakeRight});
 Motor tilter(3, true, AbstractMotor::gearset::red);
 auto tilterEncoder = IntegratedEncoder(tilter);
 
-Motor tilter2(8, true, AbstractMotor::gearset::red);
+Motor tilter2(9, false, AbstractMotor::gearset::red);
 auto tilterEncoder2 = IntegratedEncoder(tilter2);
 
 
