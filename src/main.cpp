@@ -42,6 +42,7 @@ void opcontrol()
     intakeLeft.setBrakeMode(AbstractMotor::brakeMode::hold); //set all motors to specific brake types here. Dont know why but this doesn't work in motor.h
     intakeRight.setBrakeMode(AbstractMotor::brakeMode::hold);
     tilter.setBrakeMode(AbstractMotor::brakeMode::hold);
+    tilter2.setBrakeMode(AbstractMotor::brakeMode::hold);
     intake.setBrakeMode(AbstractMotor::brakeMode::coast);
     dr4b.setBrakeMode(AbstractMotor::brakeMode::hold);
 
