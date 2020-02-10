@@ -18,13 +18,15 @@ bool intakeControl(int R2, int R1, bool isZero){
     return isZero;
 }
 
-bool tilterControl(float speed, bool isZero2){
+bool tilterControl(float speed, bool isZero2) {
     if(speed > .10 || speed < -.10){
         tilter.moveVelocity(100*speed);
+        tilter2.moveVelocity(100*speed);
         isZero2 = false;
     } else {
         if (isZero2 == false){
             tilter.moveVelocity(0);
+            tilter2.moveVelocity(0);
             isZero2 = true;}
     }
     return isZero2;
@@ -72,7 +74,7 @@ void polynomial(float distance, int max_power){
         dtL.moveVelocity(power_left);*/
         chassis.arcade(0, (power_left/200.0));
     }
-    
+
     while ((dist_traveled_left < (2*distance) / 3.0))
     {
         dist_traveled_left = leftDTEnc.get() * (3.14159265 / 180) * 2.0;
