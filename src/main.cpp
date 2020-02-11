@@ -11,224 +11,40 @@ void disabled() {} //Runs while robot is disabled. Not sure if we're gonna use t
 void competition_initialize() {} //Probably put an autonomous selector here
 
 void autonomous() {
-    // ~20 second working (without goal wall)
-
-    //4 + PRELOAD REDSIDE 
-    /* 
-    polynomialFast(7.0, 80);
-    polynomialBackFast(5.0, 80);
-    flipOut();
-    intake.moveVelocity(100);
-    pros::delay(200);
-    intake.moveVelocity(0);
-    chassis.setBrakeMode(AbstractMotor::brakeMode::hold);
-    intake.moveVelocity(-100);
-    polynomialFast(38.0, 60);
-    polynomialBackFast(23.0, 120);
-    intake.moveVelocity(0);
-    Turn(135.0, 50, 1.0, 1.1);
-    polynomialFast(7.0, 80);
-    pros::delay(100);
-    intake.moveVelocity(100);
-    pros::delay(200);
-    intake.moveVelocity(0);
-    tilterMacro();
-    intake.moveVelocity(100);
-    pros::delay(200);
-    intake.moveVelocity(0);
-    polynomialBackFast(15.0, 120);
-    */
-
-    //Skulls 8Point  Blue
-    /*
-    polynomialFast(7.0, 80);
-    polynomialBackFast(5.0, 80);
-    flipOut();
-    intake.moveVelocity(100);
-    pros::delay(200);
-    intake.moveVelocity(0);
-    chassis.setBrakeMode(AbstractMotor::brakeMode::hold);
-    intake.moveVelocity(-100);
-    polynomialFast(40.0, 60);
-    intake.moveVelocity(0);
-    Turn(35.0, 50, -1.0, 1.1);
-    polynomialFast(7.0, 60);
-    Turn(35.0, 50, 1.0, 1.1);
-    polynomialFast(17.0, 60);
-    Turn(35.0, 50, 1.0, 1.1);
-    polynomialFast(7.0, 60);
-    Turn(35.0, 50, -1.0, 1.1);
-    intake.moveVelocity(-100);
-    polynomialFast(30.0, 60);
-    pros::delay(100);
-    intake.moveVelocity(0);
-    Turn(45.0, 50, -1.0, 1.1);
-    polynomialFast(15.0, 60);
-    intake.moveVelocity(100);
-    pros::delay(120);
-    intake.moveVelocity(0);
-    tilterMacro();
-    intake.moveVelocity(100);
-    pros::delay(200);
-    intake.moveVelocity(0);
-    polynomialBackFast(15.0, 120);
-    */
-
-    //Skills 7Point Blue
-    /*
-    polynomialFast(12.0, 80);
-    polynomialBackFast(10.0, 80);
-    flipOut();
-    intake.moveVelocity(100);
-    pros::delay(200);
-    intake.moveVelocity(0);
-    chassis.setBrakeMode(AbstractMotor::brakeMode::hold);
-    intake.moveVelocity(-100);
-    polynomialFast(38.0, 60);
-    polynomialBackFast(20.0, 120);
-    intake.moveVelocity(0);
-    Turn(40.0, 100, 1.0, 1.1);
-    polynomialBackFast(28.5, 120); //was 30 in original
-    Turn(40.0, 100, -1.0, 1.1);
-    intake.moveVelocity(-100);
-    polynomialFast(30.0, 100);
-    polynomialBackFast(23.0, 120);
-    intake.moveVelocity(0);
-    Turn(135.0, 50, -1.0, 1.1);
-    polynomialFast(7.0, 80);
-    intake.moveVelocity(100);
-    pros::delay(120);
-    intake.moveVelocity(0);
-    tilterMacro();
-    intake.moveVelocity(100);
-    pros::delay(200);
-    intake.moveVelocity(0);
-    polynomialBackFast(15.0, 120);
-    */
-
-    //4 + PreLoad BLUESIDE
-    polynomialFast(7.0, 80);
-    polynomialBackFast(5.0, 80);
-    flipOut();
-    intake.moveVelocity(100);
-    pros::delay(200);
-    intake.moveVelocity(0);
-    chassis.setBrakeMode(AbstractMotor::brakeMode::hold);
-    intake.moveVelocity(-100);
-    polynomialFast(38.0, 60);
-    polynomialBackFast(23.0, 120);
-    intake.moveVelocity(0);
-    Turn(135.0, 50, -1.0, 1.1);
-    polynomialFast(7.0, 80);
-    pros::delay(100);
-    intake.moveVelocity(100);
-    pros::delay(200);
-    intake.moveVelocity(0);
-    tilterMacro();
-    intake.moveVelocity(100);
-    pros::delay(200);
-    intake.moveVelocity(0);
-    polynomialBackFast(15.0, 120);
-    
-
-    //1 point Auton
-    /*polynomialBackFast(10, 120);
-    polynomialFast(10, 120);
-    flipOut();
-    intake.moveVelocity(0);
-    */
-
-    /*6 + PRELOAD
-    //NOT TESTED
-    flipOut();
-    intake.moveVelocity(100);
-    pros::delay(200);
-    intake.moveVelocity(0);
-    chassis.setBrakeMode(AbstractMotor::brakeMode::hold);
-    intake.moveVelocity(-100);
-    polynomialFast(30.0, 120);
-    intake.moveVelocity(0);
-    polynomialBackFast(20.0, 120);
-    Turn(40.0, 100, -1.0, 1.1);
-    polynomialBackFast(28.5, 120); //was 30 in original
-    Turn(40.0, 100, 1.0, 1.1);
-    intake.moveVelocity(-100);
-    polynomialFast(43.0, 100);
-    pros::delay(200);
-    intake.moveVelocity(0);
-    polynomialBackFast(28.0, 120);
-    Turn(145.0, 100, 1.0, 1.1);
-    polynomialFast(8.0, 80);
-    tilterMacro();
-    intake.moveVelocity(100);
-    pros::delay(200);
-    intake.moveVelocity(0);
-    polynomialBackFast(15.0, 120);
-    */
-
-    /*
-    intake.moveVelocity(100);
-    pros::delay(200);
-    intake.moveVelocity(0);
-    chassis.setBrakeMode(AbstractMotor::brakeMode::hold);
-    intake.moveVelocity(-100);
-    polynomialFast(46.0, 120);
-    intake.moveVelocity(0);
-    polynomialBackFast(20.0, 120);
-    Turn(40.0, 100, -1.0, 1.1);
-    polynomialBackFast(28.5, 120); //was 30 in original
-    Turn(40.0, 100, 1.0, 1.1);
-    intake.moveVelocity(-100);
-    polynomialFast(43.0, 100);
-    pros::delay(200);
-    intake.moveVelocity(0);
-    polynomialBackFast(28.0, 120);
-    Turn(145.0, 100, 1.0, 1.1);
-    polynomialFast(8.0, 80);
-    tilterMacro();
-    intake.moveVelocity(100);
-    pros::delay(200);
-    intake.moveVelocity(0);
-    polynomialBackFast(15.0, 120);
-    */
-
-    /*
-    Work in progress version
     chassis.setBrakeMode(AbstractMotor::brakeMode::brake);
+    /* 6pt pseudo auton on aditya's newest code
+    flipout();
+    polynomialFast(15, 100);
+    polynomialBackFast(15, 100);
     intake.moveVelocity(-100);
-    polynomial(48.0, 170);
-    intake.moveVelocity(0);
-    polynomialBack(20.0, 170);
-    Turn(40.0, 150, -1.0, 1.1);
-    polynomialBack(25.0, 170);
-    Turn(40.0, 150, 1.0, 1.1);
-    intake.moveVelocity(-100);
-    polynomial(39.0, 150);
-    pros::delay(200);
-    intake.moveVelocity(0);
-    polynomialBack(26.0, 170);
-    Turn(145.0, 200, 1.0, 1.1);
-    polynomial(8.0, 80);
+    polynomialFast(25, 80);
+    polyTurn(30, 80, 1.0, ??);
+    polynomialFast(5.0, 80);
+    polynomialBackFast(5.0, 80);
+    intake.moveVelocity(0
+    polyTurnReverse(30, 80, 1.0, ???);
+    polynomialBackFast(30, 100);
+    polyTurnReverse(90, 80, 1.0, ??);
+    polynomialFast(7.0, 80);
     tilterMacro();
-    intake.moveVelocity(100);
-    pros::delay(200);
-    intake.moveVelocity(0);
-    polynomialBack(15.0, 120);*/
 
-    //pros::delay(100);
-    //intake.moveVelocity(0);
+
+
+*/
 
 } //Maybe make one of those...
 
-void opcontrol(){
+void opcontrol()
+{
     bool isZero = false;
     bool isZero2 = false;
     bool isZero3 = false;
-    intakeLeft.setBrakeMode(AbstractMotor::brakeMode::coast); //set all motors to specific brake types here. Dont know why but this doesn't work in motor.h
-    intakeRight.setBrakeMode(AbstractMotor::brakeMode::coast);
+    intakeLeft.setBrakeMode(AbstractMotor::brakeMode::hold); //set all motors to specific brake types here. Dont know why but this doesn't work in motor.h
+    intakeRight.setBrakeMode(AbstractMotor::brakeMode::hold);
     tilter.setBrakeMode(AbstractMotor::brakeMode::hold);
-    dr4bL.setBrakeMode(AbstractMotor::brakeMode::hold);
-    dr4bR.setBrakeMode(AbstractMotor::brakeMode::hold);
+    tilter2.setBrakeMode(AbstractMotor::brakeMode::hold);
+    intake.setBrakeMode(AbstractMotor::brakeMode::coast);
+    dr4b.setBrakeMode(AbstractMotor::brakeMode::hold);
 
     Controller masterController; //Maybe this can go in motor.h?
 

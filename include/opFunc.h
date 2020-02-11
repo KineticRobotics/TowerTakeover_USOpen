@@ -18,7 +18,7 @@ bool intakeControl(int R2, int R1, bool isZero){
     return isZero;
 }
 
-bool tilterControl(float speed, bool isZero2){
+bool tilterControl(float speed, bool isZero2) {
     if(speed > .10 || speed < -.10){
         tilter.moveVelocity(100*speed);
         isZero2 = false;
@@ -57,116 +57,39 @@ bool dr4bControl(int L1, int L2, int buttonB, bool isZero3){ //change variable n
     return isZero3;
 }
 
-void polynomialPrecise(float distance, int max_power){
+void polynomial(float distance, int max_power){
+   //distance = distance + .0451 * distance - .427;
     rightDTEnc.reset();
     leftDTEnc.reset();
     float dist_traveled_left = 0;
-    int power;
+    int power_right;
+    int power_left;
     while (dist_traveled_left < (distance / 3.0)){
         dist_traveled_left = leftDTEnc.get() * (3.14159265 / 180) * 2.0;
-        power = (((3*(max_power - 20))/distance) * dist_traveled_left) + 40;
-        chassis.arcade(0, (power / 200.0));
+        //power_right = (dist_traveled_right * 2 * (max_power - 30)) / distance + 30;
+        power_left = (((3*(max_power - 20))/distance) * dist_traveled_left) + 40;
+        /*dtR.moveVelocity(-1*power_right);
+        dtL.moveVelocity(power_left);*/
+        chassis.arcade(0, (power_left/200.0));
     }
-    
+
     while ((dist_traveled_left < (2*distance) / 3.0))
     {
         dist_traveled_left = leftDTEnc.get() * (3.14159265 / 180) * 2.0;
-        power = max_power;
-        chassis.arcade(0, (power / 200.0));
+        //power_right = (dist_traveled_right * 2 * (max_power - 30)) / distance + 30;
+        power_left = max_power;
+        /*dtR.moveVelocity(-1*power_right);
+        dtL.moveVelocity(power_left);*/
+        chassis.arcade(0, (power_left / 200.0));
     }
 
     while (dist_traveled_left < distance){
+        //dist_traveled_right = rightDTEnc.get() * (3.14159265 / 180) * 2.125;
         dist_traveled_left = leftDTEnc.get() * (3.14159265 / 180) * 2.0;
-        power = (((10-max_power) / (distance/3)) * dist_traveled_left) + ((3*max_power+20));
-        chassis.arcade(0, power/200.0);
+        //power_right = (dist_traveled_right * 2 * (10 - max_power)) / distance + 2 * max_power - 10;
+        power_left = (((-max_power) / (distance/3)) * dist_traveled_left) + ((3*max_power));
+        chassis.arcade(0, power_left/200.0);
     }
 
     chassis.arcade(0,0);
-}
-
-void polynomialFast(float distance, int max_power){
-    rightDTEnc.reset();
-    leftDTEnc.reset();
-    float dist_traveled_left = 0;
-    int power;
-    while (dist_traveled_left < distance){
-        dist_traveled_left = leftDTEnc.get() * (3.14159265 / 180) * 2.0;
-        power = max_power;
-        chassis.arcade(0, power / 100.0);
-    }
-
-    chassis.arcade(0, 0);
-}
-
-void polynomialBackPrecise(float distance, int max_power){
-    rightDTEnc.reset();
-    leftDTEnc.reset();
-    float dist_traveled_right = 0;
-    int power;
-    while (dist_traveled_right < (distance / 3.0)){
-        dist_traveled_right = rightDTEnc.get() * (3.14159265 / 180) * 2.0;
-        power = (((3 * (max_power - 20)) / distance) * dist_traveled_right) + 40;
-        chassis.arcade(0, (-1 * power / 100.0));
-    }
-
-    while ((dist_traveled_right < (2 * distance) / 3.0)){
-        dist_traveled_right = rightDTEnc.get() * (3.14159265 / 180) * 2.0;
-        power = max_power;
-        chassis.arcade(0, (-1*power / 100.0));
-    }
-
-    while (dist_traveled_right < distance){
-        dist_traveled_right = rightDTEnc.get() * (3.14159265 / 180) * 2.0;
-        power = (((10-max_power) / (distance / 3)) * dist_traveled_right) + ((3 * max_power+20));
-        chassis.arcade(0, -1* power / 100.0);
-    }
-
-    chassis.arcade(0, 0);
-}
-
-void polynomialBackFast(float distance, int max_power){
-    rightDTEnc.reset();
-    leftDTEnc.reset();
-    float dist_traveled_right = 0;
-    int power;
-
-    while (dist_traveled_right < distance){
-        dist_traveled_right = rightDTEnc.get() * (3.14159265 / 180) * 2.0;
-        power = max_power;
-        chassis.arcade(0, -1 * power / 100.0);
-    }
-
-    chassis.arcade(0, 0);
-}
-
-void Turn(float angle, float power, float direction, float scale){
-    float angle_traveled;;
-    angle = angle*direction;
-    gyro.reset();
-    while (fabs(angle_traveled) < fabs(angle)){
-        angle_traveled = gyro.get()*scale*direction;
-        chassis.arcade((direction*power)/100.0, 0);
-    }
-    chassis.arcade(0,0);
-}
-
-void flipOut() {
-    int happensOnce =1;
-    while (tilterEncoder.get() < 650.0)
-        tilter.moveVelocity(200);
-    tilter.moveVelocity(0);
-    intake.moveVelocity(100);
-    pros::delay(200);
-    tilter.moveVelocity(-200);
-    while (tilterEncoder.get() > 20){
-        tilter.moveVelocity(-200);
-        if (happensOnce==1 && tilterEncoder.get() < 300){
-            dr4b.moveVelocity(200);
-            pros::delay(100);
-            dr4b.moveVelocity(-200);
-            pros::delay(200);
-            dr4b.moveVelocity(0);
-            happensOnce = 0;
-        }}
-    tilter.moveVelocity(0);
 }
