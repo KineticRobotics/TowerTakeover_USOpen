@@ -101,7 +101,7 @@ void macroTask(void *) //Separate thread from the main thread that will house al
         newLift = masterController.getDigital(ControllerDigital::left);
         if (oldLift == 1 && newLift == 0)
         {
-            DR4BMacro1();
+           // DR4BMacro1();
             oldLift = 0;
             newLift = 0;
         }
@@ -111,7 +111,7 @@ void macroTask(void *) //Separate thread from the main thread that will house al
         newLift2 = masterController.getDigital(ControllerDigital::down);
         if (oldLift2 == 1 && newLift2 == 0)
         {
-          DR4BMacro2();
+          //DR4BMacro2();
           oldLift2 = 0;
           newLift2 = 0;
         }
@@ -121,7 +121,7 @@ void macroTask(void *) //Separate thread from the main thread that will house al
         newLift3 = masterController.getDigital(ControllerDigital::right);
         if (oldLift3 == 1 && newLift3 == 0)
         {
-          DR4BMacro3();
+          //DR4BMacro3();
           oldLift3 = 0;
           newLift3 = 0;
         }

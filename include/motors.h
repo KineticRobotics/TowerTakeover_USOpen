@@ -3,11 +3,11 @@
 
 using namespace okapi;
 
-Motor dtL = 10; //dt = drive Train
-Motor dtR = 1; //dt = drive Train
+Motor dtL(10, false, AbstractMotor::gearset::red);
+Motor dtR(1, false, AbstractMotor::gearset::red);
 auto chassis = ChassisControllerFactory::create(
     dtL, dtR,
-    AbstractMotor::gearset::green,
+    AbstractMotor::gearset::red,
     {4.25, 12.0});
 auto leftDTEnc = IntegratedEncoder(dtL);
 auto rightDTEnc = IntegratedEncoder(dtR);
@@ -26,6 +26,8 @@ MotorGroup intake({intakeLeft,intakeRight});
 
 Motor tilter(3, true, AbstractMotor::gearset::red);
 auto tilterEncoder = IntegratedEncoder(tilter);
+
+ADIGyro gyro = ADIGyro('A', .1);
 /*----------TEMPLATES------------------
 okapi::MotorGroup right2({10, 20});
 
