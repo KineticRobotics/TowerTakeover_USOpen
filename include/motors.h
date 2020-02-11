@@ -51,5 +51,5 @@ auto dr4b2 = ChassisControllerFactory::create(
     dr4bL2, dr4bR2,
     AbstractMotor::gearset::red
     );
-ADIGyro gyro = ADIGyro('A', .1);
 */
+ADIGyro gyro = ADIGyro('A', .1);
