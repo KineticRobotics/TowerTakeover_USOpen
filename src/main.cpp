@@ -12,24 +12,27 @@ void competition_initialize() {} //Probably put an autonomous selector here
 
 void autonomous() {
     chassis.setBrakeMode(AbstractMotor::brakeMode::brake);
-    /* 6pt pseudo auton on aditya's newest code
-    flipout();
-    polynomialFast(15, 100);
-    polynomialBackFast(15, 100);
-    intake.moveVelocity(-100);
-    polynomialFast(25, 80);
-    polyTurn(30, 80, 1.0, ??);
-    polynomialFast(5.0, 80);
-    polynomialBackFast(5.0, 80);
-    intake.moveVelocity(0
-    polyTurnReverse(30, 80, 1.0, ???);
-    polynomialBackFast(30, 100);
-    polyTurnReverse(90, 80, 1.0, ??);
-    polynomialFast(7.0, 80);
+    /* 6pt pseudo auton on aditya's newest code*/
+    tilter.moveVelocity(100);
+    pros::delay(500);
+    tilter.moveVelocity(0);
+    forward(10, 100);
+    backward(10, 100);
+    intake.moveVelocity(100);
+    pros::delay(200);
+    intake.moveVelocity(0);
+
+/*
+    forward(25, 80);
+    leftTurn(30, 80, 1.0);
+    forward(5.0, 80);
+    backward(5.0, 80);
+    intake.moveVelocity(0);
+    rightTurn(30, 80, 1.0);
+    backward(30, 100);
+    rightTurn(90, 80, 1.0);
+    forward(7.0, 80);
     tilterMacro();
-
-
-
 */
 
 } //Maybe make one of those...
