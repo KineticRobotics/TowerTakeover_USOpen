@@ -4,7 +4,11 @@
 
 using namespace okapi;
 
-void initialize() {}//Don't know if this is really gonna be used
+void initialize() {
+  pros::lcd::initialize();
+	pros::lcd::set_text(1, "Hello PROS User!");
+  pros::lcd::set_text(2, std::to_string(intake.getTemperature()));
+}//Don't know if this is really gonna be used
 
 void disabled() {} //Runs while robot is disabled. Not sure if we're gonna use this
 
@@ -13,27 +17,35 @@ void competition_initialize() {} //Probably put an autonomous selector here
 void autonomous() {
     chassis.setBrakeMode(AbstractMotor::brakeMode::brake);
     /* 6pt pseudo auton on aditya's newest code*/
-    tilter.moveVelocity(100);
-    pros::delay(500);
-    tilter.moveVelocity(0);
+
+    /*
     forward(10, 100);
     backward(10, 100);
+    while(tilterEncoder.get() < 700.0)
+      {tilter.moveVelocity(100);}
+    dr4bDownMacro();
     intake.moveVelocity(100);
-    pros::delay(200);
-    intake.moveVelocity(0);
+    */
 
-/*
-    forward(25, 80);
-    leftTurn(30, 80, 1.0);
-    forward(5.0, 80);
-    backward(5.0, 80);
+
+    intake.moveVelocity(-100); //take out when flipout works
+    forward(38, 60);
+    pros::delay(200);
+    leftTurn(6, 80, 1.0);
+    pros::delay(500);
+    forward(11, 80);
+    pros::delay(500);
+    backward(11, 80);
     intake.moveVelocity(0);
-    rightTurn(30, 80, 1.0);
-    backward(30, 100);
-    rightTurn(90, 80, 1.0);
-    forward(7.0, 80);
+    rightTurn(3, 80, 1.0);
+    backward(37, 120);
+    rightTurn(90, 80, 1.1);
+    intake.moveVelocity(100);
+    pros::delay(100);
+    intake.moveVelocity(0);
+    forward(5.0, 80);
     tilterMacro();
-*/
+    backward(10.0, 80);
 
 } //Maybe make one of those...
 
