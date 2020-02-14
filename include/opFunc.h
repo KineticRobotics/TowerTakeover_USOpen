@@ -57,7 +57,6 @@ bool dr4bControl(int L1, int L2, int buttonB, bool isZero3){ //change variable n
     return isZero3;
 }
 
-
 void forward(float distance, int max_power){
    //distance = distance + .0451 * distance - .427;
     rightDTEnc.reset();
@@ -67,7 +66,8 @@ void forward(float distance, int max_power){
     int power_left;
     while (dist_traveled_left < distance){
         //dist_traveled_right = rightDTEnc.get() * (3.14159265 / 180) * 2.125;
-        dist_traveled_left = leftDTEnc.get() * (3.14159265 / 180) * 2.0;
+        //dist_traveled_left = leftDTEnc.get() * (3.14159265 / 180) * 2.0;
+        dist_traveled_left = leftDTEnc.get() * (3.14159265 / 180) * 1.2; //FIX!
         //power_right = (dist_traveled_right * 2 * (10 - max_power)) / distance + 2 * max_power - 10;
         //power_left = (((-max_power) / (distance/3)) * dist_traveled_left) + ((3*max_power));
         power_left = max_power;
@@ -84,13 +84,14 @@ void backward(float distance, int max_power){
     float dist_traveled_right = 0;
     int power_right;
     int power_left;
-    while (dist_traveled_right > -distance){
+    while (dist_traveled_right < distance){
         //dist_traveled_right = rightDTEnc.get() * (3.14159265 / 180) * 2.125;
-        dist_traveled_right = leftDTEnc.get() * (3.14159265 / 180) * 2.0;
+        //dist_traveled_right = rightDTEnc.get() * (3.14159265 / 180) * 2.0;
+        dist_traveled_right = rightDTEnc.get() * (3.14159265 / 180) * 1.2; //FIX!
         //power_right = (dist_traveled_right * 2 * (10 - max_power)) / distance + 2 * max_power - 10;
         //power_left = (((-max_power) / (distance/3)) * dist_traveled_left) + ((3*max_power));
-        power_right = -max_power;
-        chassis.arcade(0, power_right/100.0);
+        power_right = max_power;
+        chassis.arcade(0, -power_right/100.0);
     }
     chassis.arcade(0,0);
 }
@@ -99,7 +100,7 @@ void leftTurn(float angle, int max_power, double scale) {
     float angle_traveled = 0;
     int power;
     gyro.reset();
-    while(angle_traveled < angle){
+    while(angle_traveled > -angle){
         angle_traveled = gyro.get() * scale;
         power = max_power;
         chassis.arcade(-power/100.0, 0);
