@@ -18,17 +18,18 @@ void autonomous() {
     chassis.setBrakeMode(AbstractMotor::brakeMode::brake);
     /* 6pt pseudo auton on aditya's newest code*/
 
-    /*
-    forward(10, 100);
-    backward(10, 100);
+
+/*
+    forward(10.0, 100);
+    backward(10.0, 100);
     while(tilterEncoder.get() < 700.0)
       {tilter.moveVelocity(100);}
-    dr4bDownMacro();
     intake.moveVelocity(100);
-    */
+    pros::delay(200);
+    intake.moveVelocity(0);
+    dr4bDownMacro();
 
-
-    intake.moveVelocity(-100); //take out when flipout works
+    intake.moveVelocity(-100);
     forward(38, 60);
     pros::delay(200);
     leftTurn(6, 80, 1.0);
@@ -38,14 +39,48 @@ void autonomous() {
     backward(11, 80);
     intake.moveVelocity(0);
     rightTurn(3, 80, 1.0);
-    backward(37, 120);
-    rightTurn(90, 80, 1.1);
+    //backward(37, 120);
+    backward(10, 120);
+    rightTurn(120, 80, 1.0);
+    //rightTurn(90, 80, 1.1);
+    forward(13.5, 120);
     intake.moveVelocity(100);
     pros::delay(100);
     intake.moveVelocity(0);
-    forward(5.0, 80);
+    //forward(5.0, 80);
     tilterMacro();
     backward(10.0, 80);
+*/
+
+    //SKILLS AUTON
+    /*
+    forward(10.0, 100);
+    backward(10.0, 100);
+    while(tilterEncoder.get() < 700.0)
+      {tilter.moveVelocity(100);}
+    intake.moveVelocity(100);
+    pros::delay(200);
+    intake.moveVelocity(0);
+    dr4bDownMacro();
+    */
+
+    intake.moveVelocity(-100);
+    forward(38, 60);
+    backward(10, 80);
+    leftTurn(25, 100, 1.0);
+    backward(33, 80);
+    rightTurn(25, 100, 1.0);
+    forward(38, 60);
+    backward(10, 80);
+
+    rightTurn(120, 80, 1.0);
+    forward(20, 120);
+    intake.moveVelocity(100);
+    pros::delay(100);
+    intake.moveVelocity(0);
+    tilterMacro();
+    backward(10.0, 80);
+
 
 } //Maybe make one of those...
 
