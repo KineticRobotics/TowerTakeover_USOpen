@@ -1,4 +1,5 @@
 #include "motors.h"
+#include "macro.h"
 #include "okapi/api.hpp"
 #include "main.h"
 
@@ -57,16 +58,16 @@ bool dr4bControl(int L1, int L2, int buttonB, bool isZero3){ //change variable n
     return isZero3;
 }
 
-void forward(float distance, int max_power){
+void forward(float distance, float max_power){
    //distance = distance + .0451 * distance - .427;
     rightDTEnc.reset();
     leftDTEnc.reset();
-    float dist_traveled_left = 0;
-    int power_right;
-    int power_left;
+    float dist_traveled_left;
+    float power_right;
+    float power_left;
     while (dist_traveled_left < distance){
         //dist_traveled_right = rightDTEnc.get() * (3.14159265 / 180) * 2.125;
-        //dist_traveled_left = leftDTEnc.get() * (3.14159265 / 180) * 2.0;
+        //dist_traveled_left = leftDTEnc.get() * (3.14159265 / 180.0) * 2.0;
         dist_traveled_left = leftDTEnc.get() * (3.14159265 / 180) * 1.2; //FIX!
         //power_right = (dist_traveled_right * 2 * (10 - max_power)) / distance + 2 * max_power - 10;
         //power_left = (((-max_power) / (distance/3)) * dist_traveled_left) + ((3*max_power));
@@ -82,8 +83,8 @@ void backward(float distance, int max_power){
     rightDTEnc.reset();
     leftDTEnc.reset();
     float dist_traveled_right = 0;
-    int power_right;
-    int power_left;
+    float power_right;
+    float power_left;
     while (dist_traveled_right < distance){
         //dist_traveled_right = rightDTEnc.get() * (3.14159265 / 180) * 2.125;
         //dist_traveled_right = rightDTEnc.get() * (3.14159265 / 180) * 2.0;
@@ -118,4 +119,159 @@ void rightTurn(float angle, int max_power, double scale) {
         chassis.arcade(power/100.0, 0);
     }
     chassis.arcade(0, 0);
+}
+
+void bigRed(){
+  forward(10.0, 100);
+  backward(10.0, 100);
+  while(tilterEncoder.get() < 700.0)
+    {tilter.moveVelocity(100);}
+  intake.moveVelocity(100);
+  pros::delay(200);
+  intake.moveVelocity(0);
+  dr4bDownMacro();
+
+  intake.moveVelocity(-100);
+  forward(24, 60);
+  intake.moveVelocity(0);
+  rightTurn(90, 80, 1.0);
+
+  intake.moveVelocity(-100);
+  forward(18.0, 60);
+  intake.moveVelocity(0);
+
+  backward(10.0, 80);
+  rightTurn(170, 80, 1.0);
+
+  intake.moveVelocity(-100);
+  forward(26.0, 60);
+  intake.moveVelocity(0);
+
+  leftTurn(50, 80, 1.0);
+  forward(13.5, 120);
+  intake.moveVelocity(100);
+  pros::delay(300);
+  intake.moveVelocity(0);
+  tilterMacro();
+  backward(10.0, 80);
+}
+
+void smallRed(){
+  forward(10.0, 100);
+  backward(10.0, 100);
+  while(tilterEncoder.get() < 700.0)
+    {tilter.moveVelocity(100);}
+  intake.moveVelocity(100);
+  pros::delay(200);
+  intake.moveVelocity(0);
+  dr4bDownMacro();
+  intake.moveVelocity(-100);
+  forward(38, 60);
+  pros::delay(200);
+  leftTurn(6, 80, 1.0);
+  pros::delay(500);
+  forward(11, 80);
+  pros::delay(500);
+  backward(11, 80);
+  intake.moveVelocity(0);
+  rightTurn(6, 80, 1.0);
+  backward(10, 120);
+  rightTurn(120, 80, 1.0);
+  forward(13.5, 120);
+  intake.moveVelocity(100);
+  pros::delay(100);
+  intake.moveVelocity(0);
+  tilterMacro();
+  backward(10.0, 80);
+}
+
+void bigBlue(){
+  forward(10.0, 100);
+  backward(10.0, 100);
+  while(tilterEncoder.get() < 700.0)
+    {tilter.moveVelocity(100);}
+  intake.moveVelocity(100);
+  pros::delay(200);
+  intake.moveVelocity(0);
+  dr4bDownMacro();
+
+  intake.moveVelocity(-100);
+  forward(24, 60);
+  intake.moveVelocity(0);
+  leftTurn(90, 80, 1.0);
+
+  intake.moveVelocity(-100);
+  forward(18.0, 60);
+  intake.moveVelocity(0);
+
+  backward(10.0, 80);
+  leftTurn(170, 80, 1.0);
+
+  intake.moveVelocity(-100);
+  forward(26.0, 60);
+  intake.moveVelocity(0);
+
+  rightTurn(50, 80, 1.0);
+  forward(13.5, 120);
+  intake.moveVelocity(100);
+  pros::delay(300);
+  intake.moveVelocity(0);
+  tilterMacro();
+  backward(10.0, 80);
+}
+
+void smallBlue(){
+  forward(10.0, 100);
+  backward(10.0, 100);
+  while(tilterEncoder.get() < 700.0)
+    {tilter.moveVelocity(100);}
+  intake.moveVelocity(100);
+  pros::delay(200);
+  intake.moveVelocity(0);
+  dr4bDownMacro();
+  intake.moveVelocity(-100);
+  forward(38, 60);
+  pros::delay(200);
+  rightTurn(6, 80, 1.0);
+  pros::delay(500);
+  forward(11, 80);
+  pros::delay(500);
+  backward(11, 80);
+  intake.moveVelocity(0);
+  leftTurn(6, 80, 1.0);
+  backward(10, 120);
+  leftTurn(120, 80, 1.0);
+  forward(13.5, 120);
+  intake.moveVelocity(100);
+  pros::delay(100);
+  intake.moveVelocity(0);
+  tilterMacro();
+  backward(10.0, 80);
+}
+
+void skillsAuton(){
+  forward(10.0, 100);
+  backward(10.0, 100);
+  while(tilterEncoder.get() < 700.0)
+    {tilter.moveVelocity(100);}
+  intake.moveVelocity(100);
+  pros::delay(200);
+  intake.moveVelocity(0);
+  dr4bDownMacro();
+
+  intake.moveVelocity(-100);
+  forward(38, 60);
+  backward(10, 80);
+  leftTurn(25, 100, 1.0);
+  backward(33, 80);
+  rightTurn(25, 100, 1.0);
+  forward(38, 60);
+  backward(10, 80);
+  rightTurn(120, 80, 1.0);
+  forward(20, 120);
+  intake.moveVelocity(100);
+  pros::delay(100);
+  intake.moveVelocity(0);
+  tilterMacro();
+  backward(10.0, 80);
 }
