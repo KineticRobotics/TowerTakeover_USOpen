@@ -31,6 +31,14 @@ bool tilterControl(float speed, bool isZero2) {
     return isZero2;
 }
 
+void fullPowerTilter() {
+  while(tilterEncoder.get() < 700.0)
+  {
+    tilter.moveVelocity(100);
+  }
+  tilter.moveVelocity(0);
+}
+
 bool dr4bControl(int L1, int L2, int buttonB, bool isZero3){ //change variable names?
     if(L1 == 1 && L2 == 0 && buttonB == 0){
         dr4b.moveVelocity(200);
@@ -186,6 +194,7 @@ void smallRed(){
 }
 
 void bigBlue(){
+
   forward(10.0, 100);
   backward(10.0, 100);
   while(tilterEncoder.get() < 700.0)
@@ -201,22 +210,23 @@ void bigBlue(){
   leftTurn(90, 80, 1.0);
 
   intake.moveVelocity(-100);
-  forward(18.0, 60);
+  forward(12.0, 60);
+  pros::delay(500);
   intake.moveVelocity(0);
 
   backward(10.0, 80);
-  leftTurn(170, 80, 1.0);
+  leftTurn(155, 80, 1.0);
 
   intake.moveVelocity(-100);
-  forward(26.0, 60);
+  forward(20.0, 60);
   intake.moveVelocity(0);
 
-  rightTurn(50, 80, 1.0);
-  forward(13.5, 120);
+  rightTurn(30, 80, 1.0);
+  forward(13, 120);
   intake.moveVelocity(100);
   pros::delay(300);
   intake.moveVelocity(0);
-  tilterMacro();
+  fullPowerTilter();
   backward(10.0, 80);
 }
 
