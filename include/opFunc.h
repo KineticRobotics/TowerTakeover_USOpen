@@ -272,16 +272,58 @@ void skillsAuton(){
   intake.moveVelocity(-100);
   forward(38, 60);
   backward(10, 80);
-  leftTurn(25, 100, 1.0);
+  leftTurn(28, 100, 1.0);
   backward(33, 80);
-  rightTurn(25, 100, 1.0);
-  forward(38, 60);
-  backward(10, 80);
-  rightTurn(120, 80, 1.0);
-  forward(20, 120);
+  rightTurn(28, 100, 1.0);
+  forward(43, 60);
+  backward(15, 80);
+  rightTurn(110, 80, 1.0);
+  forward(22, 120);
+  backward(1, 60);
   intake.moveVelocity(100);
-  pros::delay(100);
+  pros::delay(250);
   intake.moveVelocity(0);
   tilterMacro();
   backward(10.0, 80);
+
+  dr4bDownMacro();
+  rightTurn(100,100,1.0);
+  forward(24,80);
+  intake.moveVelocity(-100);
+  forward(20,80);
+  pros::delay(200);
+  intake.moveVelocity(0);
+
+  backward(11.0, 80);
+  intake.moveVelocity(100);
+  pros::delay(200);
+  intake.moveVelocity(0);
+  DR4BMacro2();
+  intake.moveVelocity(100);
+  pros::delay(400);
+  intake.moveVelocity(0);
+
+//
+  backward(8.0, 80);
+  dr4bDownMacro();
+  backward(10.0, 80);
+  gyro.reset();
+  leftTurn(225, 100, 1.0);
+  forward(18, 80);
+  leftTurn(45, 100, 1.0);
+  intake.moveVelocity(-100);
+  forward(18,80);
+
+  pros::delay(200);
+  intake.moveVelocity(0);
+  backward(10.0, 80);
+  DR4BMacro2();
+  forward(10.0, 80);
+  intake.moveVelocity(100);
+  pros::delay(400);
+  intake.moveVelocity(0);
+
+  backward(8.0, 80);
+  dr4bDownMacro();
+
 }
