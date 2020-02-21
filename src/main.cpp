@@ -16,11 +16,11 @@ void competition_initialize() {} //Probably put an autonomous selector here
 
 void autonomous() {
     chassis.setBrakeMode(AbstractMotor::brakeMode::brake);
-    smallRed();
+    //smallRed();
     //bigRed();
     //smallBlue();
     //bigBlue();
-    //skillsAuton();
+    skillsAuton();
 
 } //Maybe make one of those...
 
