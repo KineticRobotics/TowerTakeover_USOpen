@@ -174,20 +174,23 @@ void smallRed(){
   intake.moveVelocity(0);
   dr4bDownMacro();
   intake.moveVelocity(-100);
-  forward(38, 60);
-  pros::delay(200);
+
+  forward(41, 50);
+  //pros::delay(100); //excess
   leftTurn(6, 80, 1.0);
-  pros::delay(500);
+  //pros::delay(125); //excess
+
   forward(11, 80);
-  pros::delay(500);
+  //pros::delay(137); //excess
   backward(11, 80);
-  intake.moveVelocity(0);
   rightTurn(6, 80, 1.0);
   backward(10, 120);
-  rightTurn(120, 80, 1.0);
-  forward(13.5, 120);
+
+  rightTurn(112, 80, 1.0);
+  forward(20.5, 120);
+  intake.moveVelocity(0);
   intake.moveVelocity(100);
-  pros::delay(100);
+  pros::delay(225);
   intake.moveVelocity(0);
   tilterMacro();
   backward(10.0, 80);
@@ -240,20 +243,23 @@ void smallBlue(){
   intake.moveVelocity(0);
   dr4bDownMacro();
   intake.moveVelocity(-100);
-  forward(38, 60);
-  pros::delay(200);
+
+  forward(41, 50);
+  //pros::delay(100); //excess
   rightTurn(6, 80, 1.0);
-  pros::delay(500);
+  //pros::delay(125); //excess
+
   forward(11, 80);
-  pros::delay(500);
+  //pros::delay(137); //excess
   backward(11, 80);
-  intake.moveVelocity(0);
   leftTurn(6, 80, 1.0);
   backward(10, 120);
+
   leftTurn(120, 80, 1.0);
-  forward(13.5, 120);
+  forward(14, 120);
+  intake.moveVelocity(0);
   intake.moveVelocity(100);
-  pros::delay(100);
+  pros::delay(225);
   intake.moveVelocity(0);
   tilterMacro();
   backward(10.0, 80);
@@ -270,12 +276,12 @@ void skillsAuton(){
   dr4bDownMacro();
 
   intake.moveVelocity(-100);
-  forward(38, 60);
-  backward(10, 80);
+  forward(39, 60);
+  backward(11, 80);
   leftTurn(28, 100, 1.0);
   backward(33, 80);
   rightTurn(28, 100, 1.0);
-  forward(43, 60);
+  forward(43, 50);
   backward(15, 80);
   rightTurn(110, 80, 1.0);
   forward(22, 120);
@@ -298,29 +304,40 @@ void skillsAuton(){
   intake.moveVelocity(100);
   pros::delay(200);
   intake.moveVelocity(0);
-  DR4BMacro2();
+  DR4BMacro1();
+  forward(8.0, 80);
   intake.moveVelocity(100);
-  pros::delay(400);
+  pros::delay(500);
   intake.moveVelocity(0);
 
-//
   backward(8.0, 80);
   dr4bDownMacro();
   backward(10.0, 80);
   gyro.reset();
-  leftTurn(225, 100, 1.0);
-  forward(18, 80);
-  leftTurn(45, 100, 1.0);
+  leftTurn(245, 100, 1.0);
   intake.moveVelocity(-100);
-  forward(18,80);
+  forward(31,80);
 
-  pros::delay(200);
+  pros::delay(250);
   intake.moveVelocity(0);
   backward(10.0, 80);
-  DR4BMacro2();
+  intake.moveVelocity(100);
+  pros::delay(200);
+  intake.moveVelocity(0);
+
+  while(tilterEncoder.get() < 280){
+      tilter.moveVelocity(100);
+  }
+  tilter.moveVelocity(0);
+  while(dr4bLEncoder.get() < 200.0 || dr4bREncoder.get() <  200.0){
+      dr4b.moveVelocity(100);
+  }
+  dr4b.moveVelocity(0);
+
+
   forward(10.0, 80);
   intake.moveVelocity(100);
-  pros::delay(400);
+  pros::delay(500);
   intake.moveVelocity(0);
 
   backward(8.0, 80);
