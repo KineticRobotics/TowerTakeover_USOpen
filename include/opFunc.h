@@ -34,7 +34,7 @@ bool tilterControl(float speed, bool isZero2) {
 void fullPowerTilter() {
   while(tilterEncoder.get() < 700.0)
   {
-    tilter.moveVelocity(100);
+    tilter.moveVelocity(70);
   }
   tilter.moveVelocity(0);
 }
@@ -129,7 +129,7 @@ void rightTurn(float angle, int max_power, double scale) {
     chassis.arcade(0, 0);
 }
 
-void bigRed(){
+void Red4(){
   forward(10.0, 100);
   backward(10.0, 100);
   while(tilterEncoder.get() < 700.0)
@@ -146,12 +146,10 @@ void bigRed(){
 
   intake.moveVelocity(-100);
   forward(18.0, 60);
-  intake.moveVelocity(0);
 
   backward(10.0, 80);
   rightTurn(170, 80, 1.0);
 
-  intake.moveVelocity(-100);
   forward(26.0, 60);
   intake.moveVelocity(0);
 
@@ -164,7 +162,7 @@ void bigRed(){
   backward(10.0, 80);
 }
 
-void smallRed(){
+void Red6(){
   forward(10.0, 100);
   backward(10.0, 100);
   while(tilterEncoder.get() < 700.0)
@@ -174,7 +172,7 @@ void smallRed(){
   intake.moveVelocity(0);
   dr4bDownMacro();
   intake.moveVelocity(-100);
-  forward(38, 60);
+  forward(38, 55);
   pros::delay(200);
   leftTurn(6, 80, 1.0);
   pros::delay(500);
@@ -184,17 +182,16 @@ void smallRed(){
   intake.moveVelocity(0);
   rightTurn(6, 80, 1.0);
   backward(10, 120);
-  rightTurn(120, 80, 1.0);
-  forward(13.5, 120);
+  rightTurn(111, 80, 1.0);
+  forward(17.5, 100);
   intake.moveVelocity(100);
-  pros::delay(100);
+  pros::delay(350);
   intake.moveVelocity(0);
-  tilterMacro();
+  fullPowerTilter();
   backward(10.0, 80);
 }
 
-void bigBlue(){
-
+void Blue4(){
   forward(10.0, 100);
   backward(10.0, 100);
   while(tilterEncoder.get() < 700.0)
@@ -230,32 +227,34 @@ void bigBlue(){
   backward(10.0, 80);
 }
 
-void smallBlue(){
+void Blue6(){
   forward(10.0, 100);
   backward(10.0, 100);
-  while(tilterEncoder.get() < 700.0)
-    {tilter.moveVelocity(100);}
+  while (tilterEncoder.get() < 700.0)
+  {
+    tilter.moveVelocity(100);
+  }
   intake.moveVelocity(100);
   pros::delay(200);
   intake.moveVelocity(0);
   dr4bDownMacro();
   intake.moveVelocity(-100);
-  forward(38, 60);
+  forward(38, 55);
   pros::delay(200);
   rightTurn(6, 80, 1.0);
   pros::delay(500);
-  forward(11, 80);
+  forward(12, 80);
   pros::delay(500);
   backward(11, 80);
   intake.moveVelocity(0);
   leftTurn(6, 80, 1.0);
   backward(10, 120);
-  leftTurn(120, 80, 1.0);
-  forward(13.5, 120);
+  leftTurn(111, 80, 1.0);
+  forward(13.5, 100);
   intake.moveVelocity(100);
-  pros::delay(100);
+  pros::delay(350);
   intake.moveVelocity(0);
-  tilterMacro();
+  fullPowerTilter();
   backward(10.0, 80);
 }
 
