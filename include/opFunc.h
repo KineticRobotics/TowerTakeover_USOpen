@@ -1,328 +1,54 @@
-#include "motors.h"
-#include "macro.h"
-#include "okapi/api.hpp"
 #include "main.h"
+#include "opFunc.h"
+//#include "macro.h"
 
-bool intakeControl(int R2, int R1, bool isZero){
-    if(R2 == 1 && R1 == 0){
-        intake.moveVelocity(100);
-        isZero = false;
-    } else if(R2 == 0 && R1 == 1){
-        intake.moveVelocity(-100);
-        isZero = false;
-    } else {
-        if (isZero == false){
-            intake.moveVelocity(0);
-            isZero = true;
-        }
+using namespace okapi;
+
+void initialize() {
+  pros::lcd::initialize();
+	pros::lcd::set_text(1, "Hello PROS User!");
+  pros::lcd::set_text(2, std::to_string(intake.getTemperature()));
+}//Don't know if this is really gonna be used
+
+void disabled() {} //Runs while robot is disabled. Not sure if we're gonna use this
+
+void competition_initialize() {} //Probably put an autonomous selector here
+
+void autonomous() {
+    chassis.setBrakeMode(AbstractMotor::brakeMode::brake);
+    //Red6();
+    Red4();
+    //Blue6();
+    //Blue4();
+    //skillsAuton();
+
+} //Maybe make one of those...
+
+void opcontrol()
+{
+    bool isZero = false;
+    bool isZero2 = false;
+    bool isZero3 = false;
+    intakeLeft.setBrakeMode(AbstractMotor::brakeMode::hold); //set all motors to specific brake types here. Dont know why but this doesn't work in motor.h
+    intakeRight.setBrakeMode(AbstractMotor::brakeMode::hold);
+    tilter.setBrakeMode(AbstractMotor::brakeMode::hold);
+    tilter2.setBrakeMode(AbstractMotor::brakeMode::hold);
+    intake.setBrakeMode(AbstractMotor::brakeMode::coast);
+    dr4b.setBrakeMode(AbstractMotor::brakeMode::hold);
+
+    Controller masterController; //Maybe this can go in motor.h?
+    pros::Task my_task(macroTask, (void *)"PROS", TASK_PRIORITY_DEFAULT, //start running the macro task. For this build, it WILL get stuck in macro1();. However, operator control should still work
+                       TASK_STACK_DEPTH_DEFAULT, "My Task");
+
+    while(true){
+        masterController.setText(0,0,std::to_string(tilter.getTemperature()));
+        isZero = intakeControl(masterController.getDigital(ControllerDigital::R2), masterController.getDigital(ControllerDigital::R1), isZero); //Intake is currently in a task alone
+
+        chassis.arcade(masterController.getAnalog(ControllerAnalog::leftX),
+                       masterController.getAnalog(ControllerAnalog::leftY));
+
+        isZero2 = tilterControl(masterController.getAnalog(ControllerAnalog::rightY), isZero2);
+
+        isZero3 = dr4bControl(masterController.getDigital(ControllerDigital::L1), masterController.getDigital(ControllerDigital::L2), masterController.getDigital(ControllerDigital::B), isZero3);
     }
-    return isZero;
-}
-
-bool tilterControl(float speed, bool isZero2) {
-    if(speed > .10 || speed < -.10){
-        tilter.moveVelocity(100*speed);
-        isZero2 = false;
-    } else {
-        if (isZero2 == false){
-            tilter.moveVelocity(0);
-            isZero2 = true;}
-    }
-    return isZero2;
-}
-
-void fullPowerTilter() {
-  while(tilterEncoder.get() < 700.0)
-  {
-    tilter.moveVelocity(70);
-  }
-  tilter.moveVelocity(0);
-}
-
-bool dr4bControl(int L1, int L2, int buttonB, bool isZero3){ //change variable names?
-    if(L1 == 1 && L2 == 0 && buttonB == 0){
-        dr4b.moveVelocity(200);
-        isZero3 = false;
-    } else if(L1 == 0 && L2 == 1 && buttonB == 0){
-        dr4b.moveVelocity(-200);
-        isZero3 = false;
-    } else if(L1 == 0 && L2 == 0 && buttonB == 0){
-        if (isZero3 == false){
-            dr4b.moveVelocity(0);
-            isZero3 = true;
-        }
-    } else if(L1 == 1 && L2 == 0 && buttonB == 1){
-        dr4b.moveVelocity(70);
-        isZero3 = false;
-    } else if(L1 == 0 && L2 == 1 && buttonB == 1){
-        dr4b.moveVelocity(-70);
-        isZero3 = false;
-    } else {
-        if (isZero3 == false){
-            dr4b.moveVelocity(0);
-            isZero3 = true;
-        }
-    }
-    return isZero3;
-}
-
-void forward(float distance, float max_power){
-   //distance = distance + .0451 * distance - .427;
-    rightDTEnc.reset();
-    leftDTEnc.reset();
-    float dist_traveled_left;
-    float power_right;
-    float power_left;
-    while (dist_traveled_left < distance){
-        //dist_traveled_right = rightDTEnc.get() * (3.14159265 / 180) * 2.125;
-        //dist_traveled_left = leftDTEnc.get() * (3.14159265 / 180.0) * 2.0;
-        dist_traveled_left = leftDTEnc.get() * (3.14159265 / 180) * 1.2; //FIX!
-        //power_right = (dist_traveled_right * 2 * (10 - max_power)) / distance + 2 * max_power - 10;
-        //power_left = (((-max_power) / (distance/3)) * dist_traveled_left) + ((3*max_power));
-        power_left = max_power;
-        chassis.arcade(0, power_left/100.0);
-    }
-
-    chassis.arcade(0,0);
-}
-
-void backward(float distance, int max_power){
-   //distance = distance + .0451 * distance - .427;
-    rightDTEnc.reset();
-    leftDTEnc.reset();
-    float dist_traveled_right = 0;
-    float power_right;
-    float power_left;
-    while (dist_traveled_right < distance){
-        //dist_traveled_right = rightDTEnc.get() * (3.14159265 / 180) * 2.125;
-        //dist_traveled_right = rightDTEnc.get() * (3.14159265 / 180) * 2.0;
-        dist_traveled_right = rightDTEnc.get() * (3.14159265 / 180) * 1.2; //FIX!
-        //power_right = (dist_traveled_right * 2 * (10 - max_power)) / distance + 2 * max_power - 10;
-        //power_left = (((-max_power) / (distance/3)) * dist_traveled_left) + ((3*max_power));
-        power_right = max_power;
-        chassis.arcade(0, -power_right/100.0);
-    }
-    chassis.arcade(0,0);
-}
-
-void leftTurn(float angle, int max_power, double scale) {
-    float angle_traveled = 0;
-    int power;
-    gyro.reset();
-    while(angle_traveled > -angle){
-        angle_traveled = gyro.get() * scale;
-        power = max_power;
-        chassis.arcade(-power/100.0, 0);
-    }
-    chassis.arcade(0, 0);
-}
-
-void rightTurn(float angle, int max_power, double scale) {
-    float angle_traveled = 0;
-    int power;
-    gyro.reset();
-    while(angle_traveled < angle){
-        angle_traveled = gyro.get() * scale;
-        power = max_power;
-        chassis.arcade(power/100.0, 0);
-    }
-    chassis.arcade(0, 0);
-}
-
-void Red4(){
-  forward(10.0, 100);
-  backward(10.0, 100);
-  while(tilterEncoder.get() < 700.0)
-    {tilter.moveVelocity(100);}
-  intake.moveVelocity(100);
-  pros::delay(200);
-  intake.moveVelocity(0);
-  dr4bDownMacro();
-
-  intake.moveVelocity(-100);
-  forward(24, 60);
-  intake.moveVelocity(0);
-  rightTurn(90, 80, 1.0);
-
-  intake.moveVelocity(-100);
-  forward(18.0, 60);
-
-  backward(10.0, 80);
-  rightTurn(170, 80, 1.0);
-
-  forward(26.0, 60);
-  intake.moveVelocity(0);
-
-  leftTurn(50, 80, 1.0);
-  forward(13.5, 120);
-  intake.moveVelocity(100);
-  pros::delay(300);
-  intake.moveVelocity(0);
-  tilterMacro();
-  backward(10.0, 80);
-}
-
-void Red6(){
-  forward(10.0, 100);
-  backward(10.0, 100);
-  while(tilterEncoder.get() < 700.0)
-    {tilter.moveVelocity(100);}
-  intake.moveVelocity(100);
-  pros::delay(200);
-  intake.moveVelocity(0);
-  dr4bDownMacro();
-  intake.moveVelocity(-100);
-  forward(38, 55);
-  pros::delay(200);
-  leftTurn(6, 80, 1.0);
-  pros::delay(500);
-  forward(11, 80);
-  pros::delay(500);
-  backward(11, 80);
-  intake.moveVelocity(0);
-  rightTurn(6, 80, 1.0);
-  backward(10, 120);
-  rightTurn(111, 80, 1.0);
-  forward(17.5, 100);
-  intake.moveVelocity(100);
-  pros::delay(350);
-  intake.moveVelocity(0);
-  fullPowerTilter();
-  backward(10.0, 80);
-}
-
-void Blue4(){
-  forward(10.0, 100);
-  backward(10.0, 100);
-  while(tilterEncoder.get() < 700.0)
-    {tilter.moveVelocity(100);}
-  intake.moveVelocity(100);
-  pros::delay(200);
-  intake.moveVelocity(0);
-  dr4bDownMacro();
-
-  intake.moveVelocity(-100);
-  forward(24, 60);
-  intake.moveVelocity(0);
-  leftTurn(90, 80, 1.0);
-
-  intake.moveVelocity(-100);
-  forward(12.0, 60);
-  pros::delay(500);
-  intake.moveVelocity(0);
-
-  backward(10.0, 80);
-  leftTurn(155, 80, 1.0);
-
-  intake.moveVelocity(-100);
-  forward(20.0, 60);
-  intake.moveVelocity(0);
-
-  rightTurn(30, 80, 1.0);
-  forward(13, 120);
-  intake.moveVelocity(100);
-  pros::delay(300);
-  intake.moveVelocity(0);
-  fullPowerTilter();
-  backward(10.0, 80);
-}
-
-void Blue6(){
-  forward(10.0, 100);
-  backward(10.0, 100);
-  while (tilterEncoder.get() < 700.0)
-  {
-    tilter.moveVelocity(100);
-  }
-  intake.moveVelocity(100);
-  pros::delay(200);
-  intake.moveVelocity(0);
-  dr4bDownMacro();
-  intake.moveVelocity(-100);
-  forward(38, 55);
-  pros::delay(200);
-  rightTurn(6, 80, 1.0);
-  pros::delay(500);
-  forward(12, 80);
-  pros::delay(500);
-  backward(11, 80);
-  intake.moveVelocity(0);
-  leftTurn(6, 80, 1.0);
-  backward(10, 120);
-  leftTurn(111, 80, 1.0);
-  forward(13.5, 100);
-  intake.moveVelocity(100);
-  pros::delay(350);
-  intake.moveVelocity(0);
-  fullPowerTilter();
-  backward(10.0, 80);
-}
-
-void skillsAuton(){
-  forward(10.0, 100);
-  backward(10.0, 100);
-  while(tilterEncoder.get() < 700.0)
-    {tilter.moveVelocity(100);}
-  intake.moveVelocity(100);
-  pros::delay(200);
-  intake.moveVelocity(0);
-  dr4bDownMacro();
-
-  intake.moveVelocity(-100);
-  forward(38, 60);
-  backward(10, 80);
-  leftTurn(28, 100, 1.0);
-  backward(33, 80);
-  rightTurn(28, 100, 1.0);
-  forward(43, 60);
-  backward(15, 80);
-  rightTurn(110, 80, 1.0);
-  forward(22, 120);
-  backward(1, 60);
-  intake.moveVelocity(100);
-  pros::delay(250);
-  intake.moveVelocity(0);
-  tilterMacro();
-  backward(10.0, 80);
-
-  dr4bDownMacro();
-  rightTurn(100,100,1.0);
-  forward(24,80);
-  intake.moveVelocity(-100);
-  forward(20,80);
-  pros::delay(200);
-  intake.moveVelocity(0);
-
-  backward(11.0, 80);
-  intake.moveVelocity(100);
-  pros::delay(200);
-  intake.moveVelocity(0);
-  DR4BMacro2();
-  intake.moveVelocity(100);
-  pros::delay(400);
-  intake.moveVelocity(0);
-
-//
-  backward(8.0, 80);
-  dr4bDownMacro();
-  backward(10.0, 80);
-  gyro.reset();
-  leftTurn(225, 100, 1.0);
-  forward(18, 80);
-  leftTurn(45, 100, 1.0);
-  intake.moveVelocity(-100);
-  forward(18,80);
-
-  pros::delay(200);
-  intake.moveVelocity(0);
-  backward(10.0, 80);
-  DR4BMacro2();
-  forward(10.0, 80);
-  intake.moveVelocity(100);
-  pros::delay(400);
-  intake.moveVelocity(0);
-
-  backward(8.0, 80);
-  dr4bDownMacro();
-
 }
