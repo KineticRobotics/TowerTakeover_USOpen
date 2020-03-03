@@ -1,54 +1,121 @@
+#include "motors.h"
+#include "okapi/api.hpp"
 #include "main.h"
-#include "opFunc.h"
-//#include "macro.h"
 
-using namespace okapi;
-
-void initialize() {
-  pros::lcd::initialize();
-	pros::lcd::set_text(1, "Hello PROS User!");
-  pros::lcd::set_text(2, std::to_string(intake.getTemperature()));
-}//Don't know if this is really gonna be used
-
-void disabled() {} //Runs while robot is disabled. Not sure if we're gonna use this
-
-void competition_initialize() {} //Probably put an autonomous selector here
-
-void autonomous() {
-    chassis.setBrakeMode(AbstractMotor::brakeMode::brake);
-    //Red6();
-    Red4();
-    //Blue6();
-    //Blue4();
-    //skillsAuton();
-
-} //Maybe make one of those...
-
-void opcontrol()
-{
-    bool isZero = false;
-    bool isZero2 = false;
-    bool isZero3 = false;
-    intakeLeft.setBrakeMode(AbstractMotor::brakeMode::hold); //set all motors to specific brake types here. Dont know why but this doesn't work in motor.h
-    intakeRight.setBrakeMode(AbstractMotor::brakeMode::hold);
-    tilter.setBrakeMode(AbstractMotor::brakeMode::hold);
-    tilter2.setBrakeMode(AbstractMotor::brakeMode::hold);
-    intake.setBrakeMode(AbstractMotor::brakeMode::coast);
-    dr4b.setBrakeMode(AbstractMotor::brakeMode::hold);
-
-    Controller masterController; //Maybe this can go in motor.h?
-    pros::Task my_task(macroTask, (void *)"PROS", TASK_PRIORITY_DEFAULT, //start running the macro task. For this build, it WILL get stuck in macro1();. However, operator control should still work
-                       TASK_STACK_DEPTH_DEFAULT, "My Task");
-
-    while(true){
-        masterController.setText(0,0,std::to_string(tilter.getTemperature()));
-        isZero = intakeControl(masterController.getDigital(ControllerDigital::R2), masterController.getDigital(ControllerDigital::R1), isZero); //Intake is currently in a task alone
-
-        chassis.arcade(masterController.getAnalog(ControllerAnalog::leftX),
-                       masterController.getAnalog(ControllerAnalog::leftY));
-
-        isZero2 = tilterControl(masterController.getAnalog(ControllerAnalog::rightY), isZero2);
-
-        isZero3 = dr4bControl(masterController.getDigital(ControllerDigital::L1), masterController.getDigital(ControllerDigital::L2), masterController.getDigital(ControllerDigital::B), isZero3);
+bool intakeControl(int R2, int R1, bool isZero){
+    if(R2 == 1 && R1 == 0){
+        intake.moveVelocity(100);
+        isZero = false;
+    } else if(R2 == 0 && R1 == 1){
+        intake.moveVelocity(-100);
+        isZero = false;
+    } else {
+        if (isZero == false){
+            intake.moveVelocity(0);
+            isZero = true;
+        }
     }
+    return isZero;
+}
+
+bool tilterControl(float speed, bool isZero2) {
+    if(speed > .10 || speed < -.10){
+        tilter.moveVelocity(100*speed);
+        isZero2 = false;
+    } else {
+        if (isZero2 == false){
+            tilter.moveVelocity(0);
+            isZero2 = true;}
+    }
+    return isZero2;
+}
+
+bool dr4bControl(int L1, int L2, int buttonB, bool isZero3){ //change variable names?
+    if(L1 == 1 && L2 == 0 && buttonB == 0){
+        dr4b.moveVelocity(200);
+        isZero3 = false;
+    } else if(L1 == 0 && L2 == 1 && buttonB == 0){
+        dr4b.moveVelocity(-200);
+        isZero3 = false;
+    } else if(L1 == 0 && L2 == 0 && buttonB == 0){
+        if (isZero3 == false){
+            dr4b.moveVelocity(0);
+            isZero3 = true;
+        }
+    } else if(L1 == 1 && L2 == 0 && buttonB == 1){
+        dr4b.moveVelocity(70);
+        isZero3 = false;
+    } else if(L1 == 0 && L2 == 1 && buttonB == 1){
+        dr4b.moveVelocity(-70);
+        isZero3 = false;
+    } else {
+        if (isZero3 == false){
+            dr4b.moveVelocity(0);
+            isZero3 = true;
+        }
+    }
+    return isZero3;
+}
+
+void forward(float distance, int max_power){
+   //distance = distance + .0451 * distance - .427;
+    rightDTEnc.reset();
+    leftDTEnc.reset();
+    float dist_traveled_left = 0;
+    int power_right;
+    int power_left;
+    while (dist_traveled_left < distance){
+        //dist_traveled_right = rightDTEnc.get() * (3.14159265 / 180) * 2.125;
+        //dist_traveled_left = leftDTEnc.get() * (3.14159265 / 180) * 2.0;
+        dist_traveled_left = leftDTEnc.get() * (3.14159265 / 180) * 1.2; //FIX!
+        //power_right = (dist_traveled_right * 2 * (10 - max_power)) / distance + 2 * max_power - 10;
+        //power_left = (((-max_power) / (distance/3)) * dist_traveled_left) + ((3*max_power));
+        power_left = max_power;
+        chassis.arcade(0, power_left/100.0);
+    }
+
+    chassis.arcade(0,0);
+}
+
+void backward(float distance, int max_power){
+   //distance = distance + .0451 * distance - .427;
+    rightDTEnc.reset();
+    leftDTEnc.reset();
+    float dist_traveled_right = 0;
+    int power_right;
+    int power_left;
+    while (dist_traveled_right < distance){
+        //dist_traveled_right = rightDTEnc.get() * (3.14159265 / 180) * 2.125;
+        //dist_traveled_right = rightDTEnc.get() * (3.14159265 / 180) * 2.0;
+        dist_traveled_right = rightDTEnc.get() * (3.14159265 / 180) * 1.2; //FIX!
+        //power_right = (dist_traveled_right * 2 * (10 - max_power)) / distance + 2 * max_power - 10;
+        //power_left = (((-max_power) / (distance/3)) * dist_traveled_left) + ((3*max_power));
+        power_right = max_power;
+        chassis.arcade(0, -power_right/100.0);
+    }
+    chassis.arcade(0,0);
+}
+
+void leftTurn(float angle, int max_power, double scale) {
+    float angle_traveled = 0;
+    int power;
+    gyro.reset();
+    while(angle_traveled > -angle){
+        angle_traveled = gyro.get() * scale;
+        power = max_power;
+        chassis.arcade(-power/100.0, 0);
+    }
+    chassis.arcade(0, 0);
+}
+
+void rightTurn(float angle, int max_power, double scale) {
+    float angle_traveled = 0;
+    int power;
+    gyro.reset();
+    while(angle_traveled < angle){
+        angle_traveled = gyro.get() * scale;
+        power = max_power;
+        chassis.arcade(power/100.0, 0);
+    }
+    chassis.arcade(0, 0);
 }
