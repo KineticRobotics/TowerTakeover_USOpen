@@ -3,31 +3,33 @@
 
 void tilterMacro(){
   //This is where the condition for the macro will go. E.g) While DR4B not in position
-    while (tilterEncoder.get() < 350.0)
+    while (tilterEncoder.get() < 450.0)
     {
      //thinking about tilter stuff; made by Vincent 1/16
         tilter.moveVelocity(100);
     }
-    while (tilterEncoder.get() < 550.0)
+    intake.setBrakeMode(AbstractMotor::brakeMode::coast);
+    while (tilterEncoder.get() < 710.0)
+    {
+        tilter.moveVelocity(60);
+    }
+    while (tilterEncoder.get() < 900.0)
     {
         tilter.moveVelocity(30);
     }
-    while (tilterEncoder.get() < 700.0)
-    {
-        tilter.moveVelocity(15);
-    }
     tilter.moveVelocity(0);
+    intake.setBrakeMode(AbstractMotor::brakeMode::hold);
 }
 
 void dr4bDownMacro(){
     while (dr4bSensor.get_value() == 0)
     {
-        dr4b.moveVelocity(-100);
+        dr4b.moveVelocity(-200);
         tilter.moveVelocity(-30);
     }
     dr4b.moveVelocity(0);
     while(tilterSensor.get_value() != 1)
-      {tilter.moveVelocity(-100);}
+      {tilter.moveVelocity(-200);}
       tilter.moveVelocity(0);
 }
 
@@ -48,7 +50,7 @@ void DR4BMacro1(){  ///Low Tower; 18.83 inches
         tilter.moveVelocity(100);
     }
     tilter.moveVelocity(0);
-    while(dr4bLEncoder.get() < 330.0 || dr4bREncoder.get() <  330.0){
+    while(dr4bEncoder.get() < 330.0){
         dr4b.moveVelocity(100);
     }
     dr4b.moveVelocity(0);
@@ -60,7 +62,7 @@ void DR4BMacro2(){  ///Medium Tower; 24.66 inches
         tilter.moveVelocity(100);
     }
     tilter.moveVelocity(0);
-    while(dr4bLEncoder.get() < 430.0 || dr4bREncoder.get() <  430.0){
+    while(dr4bEncoder.get()){
         dr4b.moveVelocity(100);
     }
     dr4b.moveVelocity(0);
@@ -72,7 +74,7 @@ void DR4BMacro3(){  ///Medium Tower; 24.66 inches
       tilter.moveVelocity(100);
   }
   tilter.moveVelocity(0);
-  while(dr4bLEncoder.get() < 430.0 || dr4bREncoder.get() <  430.0){
+  while(dr4bEncoder.get()){
       dr4b.moveVelocity(100);
   }
   dr4b.moveVelocity(0);
@@ -81,7 +83,7 @@ void DR4BMacro3(){  ///Medium Tower; 24.66 inches
       tilter.moveVelocity(100);
   }
   tilter.moveVelocity(0);
-  while(dr4bLEncoder.get() < 700.0 || dr4bREncoder.get() <  700.0){
+  while(dr4bEncoder.get()){
       dr4b.moveVelocity(70);
   }
   dr4b.moveVelocity(0);

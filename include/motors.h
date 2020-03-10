@@ -3,38 +3,33 @@
 
 using namespace okapi;
 
-Motor dtL = 10; //dt = drive Train
-Motor dtR = 1; //dt = drive Train
+Motor dtLF = 18; //dt = drive Train
+Motor dtLB = 10; //dt = drive Train
+Motor dtRF = 1;
+Motor dtRB = 13;
+
+MotorGroup leftDrive({dtLF, dtLB});
+MotorGroup rightDrive({dtRF, dtRB});
+
 auto chassis = ChassisControllerFactory::create(
-    dtL, dtR,
+    leftDrive, rightDrive,
     AbstractMotor::gearset::green,
     {4.25, 12.0});
-auto leftDTEnc = IntegratedEncoder(dtL);
-auto rightDTEnc = IntegratedEncoder(dtR);
+auto leftDTEnc = IntegratedEncoder(dtLF);
+auto rightDTEnc = IntegratedEncoder(dtRF);
 
-Motor dr4bL(20, true, AbstractMotor::gearset::red);
-auto dr4bLEncoder = IntegratedEncoder(dr4bL);
-Motor dr4bR(11, false, AbstractMotor::gearset::red);
-auto dr4bREncoder = IntegratedEncoder(dr4bR);
-MotorGroup dr4b({dr4bL, dr4bR});
-
+Motor dr4b(11, false, AbstractMotor::gearset::green);
+auto dr4bEncoder = IntegratedEncoder(dr4b);
 
 Motor intakeLeft(14, false, AbstractMotor::gearset::red);
-Motor intakeRight(16, true, AbstractMotor::gearset::red);
+Motor intakeRight(17, true, AbstractMotor::gearset::red);
 
 MotorGroup intake({intakeLeft,intakeRight});
 
-Motor tilter1(3, true, AbstractMotor::gearset::red);
-auto tilterEncoder = IntegratedEncoder(tilter1);
-
-Motor tilter2(7, false, AbstractMotor::gearset::red);
-auto tilterEncoder2 = IntegratedEncoder(tilter2);
-
-MotorGroup tilter({tilter1, tilter2});
-
+Motor tilter(3, true, AbstractMotor::gearset::red);
+auto tilterEncoder = IntegratedEncoder(tilter);
 
 pros::ADIDigitalIn tilterSensor ('B');
-pros::ADIAnalogIn lineSensor ('C');
 pros::ADIDigitalIn dr4bSensor ('D');
 //lineTracker.get_value() (0 --> 4095): 0 being light and 4095 being dark
 
